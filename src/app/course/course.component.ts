@@ -2,22 +2,15 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {ActivatedRoute} from "@angular/router";
 import {Course} from "../model/course";
 import {
-    debounceTime,
-    distinctUntilChanged,
-    startWith,
-    tap,
-    delay,
-    map,
-    concatMap,
-    switchMap,
-    withLatestFrom,
+    debounceTime, distinctUntilChanged, startWith,
+    tap, delay, map,
+    concatMap, switchMap, withLatestFrom,
     concatAll, shareReplay, first, take
 } from 'rxjs/operators';
 import {merge, fromEvent, Observable, concat, forkJoin} from 'rxjs';
 import {Lesson} from '../model/lesson';
 import { createHttpObservable } from '../common/util';
 import { Store } from '../common/store.service';
-
 
 @Component({
     selector: 'course',
@@ -38,16 +31,26 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.courseId = this.route.snapshot.params['id'];
+        this.course$ = this.store.selectCourseById(this.courseId);
 
         // Force an Observable to complete if needed in a forkJoin
-        this.course$ = this.store.selectCourseById(this.courseId)
-            .pipe(
-                //first()
-                take(1)
-            );
+        // this.course$ = this.store.selectCourseById(this.courseId)
+        //     .pipe(
+        //         //first()
+        //         take(1)
+        //     );
+        // forkJoin(this.course$, this.loadLessons())
+        //     .subscribe(console.log)
 
-        forkJoin(this.course$, this.loadLessons())
-            .subscribe(console.log)
+        // Long running observable
+        this.loadLessons()
+            .pipe(
+                withLatestFrom(this.course$)
+            )
+            .subscribe(([lessons, course]) => {
+                console.log("LESSONS", lessons);
+                console.log("COURSE", course);
+            });
     }
 
     ngAfterViewInit() {
