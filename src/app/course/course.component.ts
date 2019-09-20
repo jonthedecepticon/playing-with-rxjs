@@ -43,7 +43,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
         this.course$ = this.store.selectCourseById(this.courseId)
             .pipe(
                 //first()
-                take(3)
+                take(1)
             );
 
         forkJoin(this.course$, this.loadLessons())
