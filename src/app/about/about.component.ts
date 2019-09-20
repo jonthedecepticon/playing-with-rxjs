@@ -1,40 +1,22 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {
-    concat,
-    fromEvent,
-    interval,
-    noop,
-    observable,
-    Observable,
-    of,
-    timer,
-    merge,
-    Subject,
-    BehaviorSubject,
-    AsyncSubject,
-    ReplaySubject
-} from 'rxjs';
-import {delayWhen, filter, map, take, timeout} from 'rxjs/operators';
-import {createHttpObservable} from '../common/util';
-
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { createHttpObservable } from '../common/util';
+import { noop } from 'rxjs/internal/util/noop';
+import { of } from 'rxjs/internal/observable/of';
+import { concat } from 'rxjs/internal/observable/concat';
+import { interval, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'about',
-    templateUrl: './about.component.html',
-    styleUrls: ['./about.component.css']
+  selector: 'about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
 
-    ngOnInit() {
+  constructor() { }
 
+  ngOnInit() {
 
-    }
-
+  }
 
 }
-
-
-
-
-
-
